@@ -1,17 +1,22 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import { BsSearch } from "react-icons/bs";
-import { BiCart } from "react-icons/bi";
-import { SlLocationPin } from "react-icons/sl";
-import LowerHeader from "./LowerHeader";
 import classes from "./header.module.css";
-import { DataContext } from "../../components/DataProvider/DataProvider";
+import { Link } from "react-router-dom";
+import { SlLocationPin } from "react-icons/sl";
+import { BsSearch } from "react-icons/bs";
+import LowerHeader from "./LowerHeader";
+import { BiCart } from "react-icons/bi";
+import { DataContext } from "../DataProvider/DataProvider";
+import { auth } from "../../utils/firebase";
 
-function Header() {
-  const [{ basket }, dispatch] = useContext(DataContext);
+const Header = () => {
+  const [{ user, basket }, dispatch] = useContext(DataContext);
+  const totalItem = basket?.reduce((amount, item) => {
+    return item.amount + amount;
+  }, 0);
+
   return (
     <section className={classes.fixed}>
-      <section className={classes.fixed}>
+      <section>
         <div className={classes.header__container}>
           <div className={classes.logo__container}>
             <Link to="/">
@@ -32,37 +37,48 @@ function Header() {
           </div>
 
           <div className={classes.search}>
-            <select name="search" id="search">
-              <option value="all">All</option>
+            <select name="" id="">
+              <option value="">All</option>
             </select>
-            <input type="text" placeholder="Search product" />
-            <BsSearch aria-label="Search" />
+            <input type="text" />
+            <BsSearch size={38} />
           </div>
 
           <div className={classes.order__container}>
-            <Link to="/" className={classes.language}>
+            <Link to="" className={classes.language}>
               <img
-                src="https://static.vecteezy.com/system/resources/previews/000/532/212/original/vector-united-states-of-america-flag-usa-flag-america-flag-background.jpg"
-                alt="United States flag"
+                src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/1024px-Flag_of_the_United_States.svg.png"
+                alt=""
               />
-              <select>
+
+              <select name="" id="">
                 <option value="">EN</option>
               </select>
             </Link>
-
-            <Link to="/auth">
-              <p>Sign In</p>
-              <span>Account & Lists</span>
+            <Link to={!user && "/auth"}>
+              <div>
+                {user ? (
+                  <>
+                    <p>Hello {user?.email?.split("@")[0]}</p>
+                    <span onClick={() => (user ? auth.signOut() : null)}>
+                      Sign Out
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <p>Sign In</p>
+                    <span>Account & Lists</span>
+                  </>
+                )}
+              </div>
             </Link>
-
             <Link to="/orders">
-              <p>Return</p>
+              <p>returns</p>
               <span>& Orders</span>
             </Link>
-
             <Link to="/cart" className={classes.cart}>
-              <BiCart aria-label="Cart" size={35} />
-              <span>{basket.length}</span>
+              <BiCart size={35} />
+              <span>{totalItem}</span>
             </Link>
           </div>
         </div>
@@ -70,6 +86,6 @@ function Header() {
       <LowerHeader />
     </section>
   );
-}
+};
 
 export default Header;
