@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../components/LayOut/LayOut";
 import classes from "./Results.module.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { productUrl } from "../../Api/endPoints";
 import ProductCard from "../../components/Product/ProductCard";
+import Layout from "../../components/Layout/Layout";
 
 function Results() {
   const [results, setResults] = useState([]);

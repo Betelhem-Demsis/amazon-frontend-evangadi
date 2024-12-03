@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import classes from "./Payment.module.css";
-import Layout from "../../components/LayOut/LayOut";
 import { DataContext } from "../../components/DataProvider/DataProvider";
 import ProductCard from "../../components/Product/ProductCard";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
@@ -10,6 +9,7 @@ import { ClipLoader } from "react-spinners";
 import { db } from "../../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { Type } from "../../utils/action.type";
+import Layout from "../../components/Layout/Layout";
 
 function Payment() {
   const [{ user, basket }, dispatch] = useContext(DataContext);
